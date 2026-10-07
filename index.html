@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pinnacle Prime Steakhouse | Đỉnh Cao Bít Tết</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: #030303;
+            overflow-x: hidden;
+        }
+        .font-heading { 
+            font-family: 'Oswald', sans-serif; 
+            font-weight: 600;
+            letter-spacing: 0.05em; 
+        }
+
+        /* 1. HIỆU ỨNG CON TRỎ CHUỘT ĐỘC BẢN (CHỈ DÀNH CHO PC) */
+        @media (min-width: 1024px) {
+            body, a, button, input, select, textarea { cursor: none !important; }
+        }
+        #custom-cursor {
+            position: fixed; top: 0; left: 0; width: 6px; height: 6px; 
+            background-color: #dc2626; border-radius: 50%;
+            transform: translate(-50%, -50%); z-index: 99999; pointer-events: none;
+            box-shadow: 0 0 10px #dc2626;
+        }
+        #custom-cursor-blur {
+            position: fixed; top: 0; left: 0; width: 40px; height: 40px;
+            border: 1px solid rgba(220,38,38,0.5); border-radius: 50%;
+            transform: translate(-50%, -50%); z-index: 99998; pointer-events: none;
+            transition: left 0.15s ease-out, top 0.15s ease-out, width 0.2s, height 0.2s;
+            box-shadow: 0 0 15px rgba(220,38,38,0.2);
+        }
+        .cursor-hover #custom-cursor-blur {
+            width: 60px; height: 60px; border-color: #dc2626; background-color: rgba(220,38,38,0.1);
+        }
+
+        /* Thanh tải Preloader */
+        @keyframes loadProgress { 0% { width: 0%; } 100% { width: 100%; } }
+        .animate-loader { animation: loadProgress 1.5s cubic-bezier(0.8, 0, 0.2, 1) forwards; }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0a; }
+        ::-webkit-scrollbar-thumb { background: #222; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #dc2626; }
+    </style>
+</head>
+<body class="bg-[#030303] text-gray-300 min-h-screen flex flex-col selection:bg-red-600 selection:text-white relative">
+
+    <!-- CÁC ELEMENT CỦA CON TRỎ CHUỘT (Sẽ ẩn trên mobile) -->
+    <div id="custom-cursor" class="hidden lg:block"></div>
+    <div id="custom-cursor-blur" class="hidden lg:block"></div>
+
+    <!-- PRELOADER -->
+    <div id="preloader" class="fixed inset-0 z-[100] bg-[#030303] flex flex-col items-center justify-center transition-opacity duration-1000">
+        <i class="fa-solid fa-cow text-5xl text-red-600 animate-pulse mb-6 drop-shadow-[0_0_15px_rgba(220,38,38,0.5)]"></i>
+        <span class="text-2xl font-heading tracking-[0.4em] text-white">PINNACLE PRIME</span>
+        <span class="text-[9px] uppercase tracking-[0.5em] text-red-600 font-bold mt-2">Steakhouse</span>
+        <div class="w-48 h-[1px] bg-neutral-900 mt-8 overflow-hidden">
+            <div class="h-full bg-red-600 w-0 animate-loader shadow-[0_0_10px_red]"></div>
+        </div>
+    </div>
+
+    <!-- SCROLL PROGRESS BAR -->
+    <div class="fixed top-0 left-0 h-[2px] bg-red-600 z-[60] shadow-[0_0_8px_red] transition-all duration-75" id="scroll-progress" style="width: 0%"></div>
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="fixed top-0 w-full z-50 bg-[#030303]/70 backdrop-blur-xl border-b border-white/5 transition-all duration-300" id="navbar">
+        <div class="max-w-[1400px] mx-auto px-6 h-24 flex items-center justify-between gap-4">
+            <a href="#" class="flex items-center gap-4 group cursor-hover-target">
+                <div class="w-10 h-10 border border-neutral-800 rounded-full flex items-center justify-center group-hover:border-red-600 transition-colors">
+                    <i class="fa-solid fa-cow text-xl text-red-600 group-hover:drop-shadow-[0_0_8px_red] transition-all"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-xl font-heading tracking-[0.2em] text-white mt-1">PINNACLE PRIME</span>
+                </div>
+            </a>
+
+            <nav class="hidden lg:flex items-center gap-10 text-[10px] font-bold tracking-[0.2em] uppercase text-gray-400">
+                <a href="#menu" class="cursor-hover-target hover:text-white hover:drop-shadow-[0_0_5px_white] transition-all">Thực đơn</a>
+                <a href="#space-3d" class="cursor-hover-target hover:text-white hover:drop-shadow-[0_0_5px_white] transition-all">Không gian 3D</a>
+                <a href="#gallery" class="cursor-hover-target hover:text-white hover:drop-shadow-[0_0_5px_white] transition-all">Thư viện</a>
+                <a href="#events" class="cursor-hover-target hover:text-white hover:drop-shadow-[0_0_5px_white] transition-all">Tiệc & Sự kiện</a>
+            </nav>
+
+            <div class="flex items-center gap-5">
+                <button onclick="toggleCartModal()" class="cursor-hover-target relative group flex items-center gap-2">
+                    <span class="w-10 h-10 rounded-full border border-neutral-800 flex items-center justify-center text-white group-hover:border-red-600 group-hover:bg-red-600/10 transition-all">
+                        <i class="fa-solid fa-bag-shopping text-sm"></i>
+                    </span>
+                    <span id="cart-badge" class="absolute -top-1 -right-1 w-4 h-4 bg-red-600 text-[9px] font-bold text-white rounded-full flex items-center justify-center shadow-[0_0_5px_red]">0</span>
+                </button>
+                <a href="#reservation" class="cursor-hover-target hidden md:inline-block px-7 py-3.5 bg-red-600 hover:bg-red-700 hover:shadow-[0_0_20px_rgba(220,38,38,0.4)] text-white text-[10px] font-bold uppercase tracking-[0.2em] transition-all">
+                    Đặt bàn ngay
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-grow">
+
+        <!-- 2. HERO SECTION (VIDEO NỀN BÍT TẾT NƯỚNG LỬA CHUẨN ĐIỆN ẢNH) -->
+        <section class="relative min-h-screen flex items-center pt-24 pb-20 px-6 overflow-hidden">
+            <div class="absolute inset-0 z-0">
+                <!-- Overlay đổ bóng để chữ luôn nổi bật -->
+                <div class="absolute inset-0 bg-gradient-to-r from-[#030303] via-[#030303]/70 to-[#030303]/30 z-10"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-transparent z-10"></div>
+                
+                <!-- Video Nền Bít Tết lửa (Không tiếng, Tự động chạy) -->
+                <video autoplay loop muted playsinline class="w-full h-full object-cover grayscale-[30%] opacity-80 pointer-events-none">
+                    <source src="https://cdn.pixabay.com/video/2020/05/24/40061-425126837_large.mp4" type="video/mp4">
+                    <!-- Nếu video trên lỗi do mạng, hệ thống sẽ fallback dùng ảnh nền -->
+                </video>
+            </div>
+
+            <div class="max-w-[1400px] w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 relative z-20">
+                <div class="space-y-8 text-left" data-aos="fade-right" data-aos-delay="1500">
+                    <div class="inline-flex items-center gap-3 px-4 py-2 border border-red-600/30 bg-red-600/5 backdrop-blur-sm cursor-hover-target">
+                        <span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-pulse shadow-[0_0_5px_red]"></span>
+                        <span class="text-red-500 text-[9px] font-bold uppercase tracking-[0.3em]">Nghệ Thuật Bít Tết Đương Đại</span>
+                    </div>
+                    <h1 class="text-6xl md:text-8xl lg:text-[100px] font-heading text-white leading-[0.95] uppercase drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)]">
+                        Đỉnh Cao <br><span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800 drop-shadow-[0_0_15px_rgba(220,38,38,0.5)]">Bít Tết</span>
+                    </h1>
+                    <p class="text-sm md:text-base text-gray-300 max-w-md leading-relaxed font-light text-justify drop-shadow-[0_5px_5px_rgba(0,0,0,0.8)]">
+                        Thưởng thức những phần bò Wagyu và Black Angus mềm mọng, nướng mộc trên than hoa trong không gian kiến trúc tối giản, tôn vinh trọn vẹn hương vị nguyên bản.
+                    </p>
+                    <div class="flex flex-wrap items-center gap-5 pt-4">
+                        <a href="#reservation" class="cursor-hover-target px-8 py-4 bg-red-600 hover:bg-red-700 hover:shadow-[0_0_20px_rgba(220,38,38,0.5)] text-white font-bold text-[11px] uppercase tracking-[0.2em] transition-all backdrop-blur-md">
+                            Giữ Chỗ Ngay
+                        </a>
+                        <a href="#menu" class="cursor-hover-target px-8 py-4 bg-transparent border border-white hover:bg-white hover:text-black text-white font-bold text-[11px] uppercase tracking-[0.2em] transition-all backdrop-blur-md">
+                            Xem Menu
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 animate-bounce text-white/50" data-aos="fade-in" data-aos-delay="2000">
+                <i class="fa-solid fa-chevron-down text-xl"></i>
+            </div>
+        </section>
+
+        <!-- 3D SHOWCASE SECTION -->
+        <section id="space-3d" class="px-6 py-28 bg-[#050505] border-y border-neutral-900 relative">
+            <div class="absolute top-0 right-0 w-96 h-96 bg-red-600/5 blur-[120px] pointer-events-none"></div>
+            
+            <div class="max-w-[1400px] mx-auto relative z-10">
+                <div class="flex flex-col items-center space-y-4 mb-20" data-aos="fade-up">
+                    <span class="text-red-600 text-[10px] font-bold uppercase tracking-[0.4em] flex items-center gap-2"><i class="fa-brands fa-unity"></i> Trải Nghiệm 3D</span>
+                    <h2 class="text-4xl md:text-5xl font-heading text-white uppercase text-center">Không Gian Vị Giác</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12" data-aos="fade-up" data-aos-delay="200">
+                    <div class="bg-[#030303] border border-neutral-900 p-8 flex flex-col justify-between space-y-6 hover:border-red-600/50 hover:shadow-[0_0_30px_rgba(220,38,38,0.05)] transition-all group">
+                        <div class="flex justify-between items-center border-b border-neutral-900 pb-5">
+                            <div>
+                                <h3 class="font-heading text-3xl text-white tracking-widest uppercase">Modern Lounge</h3>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-[0.2em] mt-2">Khu vực trung tâm • Ánh sáng mở</p>
+                            </div>
+                            <span class="text-[9px] px-4 py-1.5 bg-neutral-900 text-white border border-neutral-700 uppercase tracking-[0.2em] font-bold">Khu VIP</span>
+                        </div>
+                        <div class="w-full h-[400px] bg-[#0a0a0a] border border-neutral-900 relative overflow-hidden cursor-hover-target">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none z-10"></div>
+                            <model-viewer src="./models/banmodern.glb" alt="Bàn Modern" auto-rotate camera-controls shadow-intensity="2" exposure="0.8" class="w-full h-full z-0"></model-viewer>
+                        </div>
+                        <button onclick="selectTableType('Bàn Modern (VIP)')" class="cursor-hover-target w-full py-4 bg-neutral-900 hover:bg-red-600 text-white border border-neutral-800 hover:border-transparent text-[10px] font-bold uppercase tracking-[0.2em] transition-all relative overflow-hidden group-hover:shadow-[0_0_15px_rgba(220,38,38,0.3)]">
+                            Chọn vị trí này
+                        </button>
+                    </div>
+
+                    <div class="bg-[#030303] border border-neutral-900 p-8 flex flex-col justify-between space-y-6 hover:border-red-600/50 hover:shadow-[0_0_30px_rgba(220,38,38,0.05)] transition-all group">
+                        <div class="flex justify-between items-center border-b border-neutral-900 pb-5">
+                            <div>
+                                <h3 class="font-heading text-3xl text-white tracking-widest uppercase">Classic Wood</h3>
+                                <p class="text-[10px] text-gray-500 uppercase tracking-[0.2em] mt-2">Góc tối giản • Đề cao sự riêng tư</p>
+                            </div>
+                            <span class="text-[9px] px-4 py-1.5 bg-neutral-900 text-white border border-neutral-700 uppercase tracking-[0.2em] font-bold">Cặp đôi</span>
+                        </div>
+                        <div class="w-full h-[400px] bg-[#0a0a0a] border border-neutral-900 relative overflow-hidden cursor-hover-target">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent pointer-events-none z-10"></div>
+                            <model-viewer src="./models/bansimple.glb" alt="Bàn Simple" auto-rotate camera-controls shadow-intensity="2" exposure="0.8" class="w-full h-full z-0"></model-viewer>
+                        </div>
+                        <button onclick="selectTableType('Bàn Gỗ Classic (Couple)')" class="cursor-hover-target w-full py-4 bg-neutral-900 hover:bg-red-600 text-white border border-neutral-800 hover:border-transparent text-[10px] font-bold uppercase tracking-[0.2em] transition-all relative overflow-hidden group-hover:shadow-[0_0_15px_rgba(220,38,38,0.3)]">
+                            Chọn vị trí này
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MENU SECTION -->
+        <section id="menu" class="px-6 py-28 max-w-[1400px] mx-auto">
+            <div class="flex flex-col items-center space-y-4 mb-16" data-aos="fade-up">
+                <span class="text-red-600 text-[10px] font-bold uppercase tracking-[0.4em]">Bộ Sưu Tập</span>
+                <h2 class="text-4xl md:text-5xl font-heading text-white uppercase text-center">Thực Đơn Thượng Hạng</h2>
+            </div>
+
+            <div class="max-w-3xl mx-auto space-y-10 mb-16" data-aos="fade-up" data-aos-delay="100">
+                <div class="relative group cursor-hover-target">
+                    <i class="fa-solid fa-magnifying-glass absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 text-sm group-focus-within:text-red-600 transition-colors"></i>
+                    <input type="text" id="search-input" oninput="filterDishes()" placeholder="TÌM KIẾM MÓN ĂN HOẶC LOẠI VANG..." class="w-full pl-14 pr-6 py-5 bg-[#0a0a0a] border border-neutral-800 text-xs tracking-[0.2em] uppercase text-white placeholder-gray-600 focus:outline-none focus:border-red-600 focus:bg-black transition-all">
+                </div>
+                <div class="flex flex-wrap items-center justify-center gap-4">
+                    <button id="btn-all" onclick="setCategory('all')" class="category-btn cursor-hover-target active px-7 py-3 font-bold text-[9px] uppercase tracking-[0.2em] transition-all bg-red-600 text-white shadow-[0_0_10px_rgba(220,38,38,0.3)] border-transparent">Tất cả</button>
+                    <button id="btn-main" onclick="setCategory('main')" class="category-btn cursor-hover-target px-7 py-3 font-bold text-[9px] uppercase tracking-[0.2em] transition-all bg-[#0a0a0a] text-gray-400 hover:text-white border border-neutral-800 hover:border-neutral-500">Bít Tết & Món Chính</button>
+                    <button id="btn-snack" onclick="setCategory('snack')" class="category-btn cursor-hover-target px-7 py-3 font-bold text-[9px] uppercase tracking-[0.2em] transition-all bg-[#0a0a0a] text-gray-400 hover:text-white border border-neutral-800 hover:border-neutral-500">Khai Vị</button>
+                    <button id="btn-drink" onclick="setCategory('drink')" class="category-btn cursor-hover-target px-7 py-3 font-bold text-[9px] uppercase tracking-[0.2em] transition-all bg-[#0a0a0a] text-gray-400 hover:text-white border border-neutral-800 hover:border-neutral-500">Hầm Vang</button>
+                </div>
+            </div>
+
+            <div id="dish-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 min-h-[300px]" data-aos="fade-up" data-aos-delay="200">
+                <!-- Render từ CSDL -->
+            </div>
+        </section>
+
+        <!-- THƯ VIỆN ẢNH (GALLERY) -->
+        <section id="gallery" class="px-6 py-28 max-w-[1400px] mx-auto bg-[#050505] border-t border-neutral-900 relative">
+            <div class="flex flex-col items-center space-y-4 mb-16" data-aos="fade-up">
+                <span class="text-red-600 text-[10px] font-bold uppercase tracking-[0.4em]">Đánh Thức Giác Quan</span>
+                <h2 class="text-4xl md:text-5xl font-heading text-white uppercase text-center">Nghệ Thuật Trình Bày</h2>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="col-span-2 row-span-2 relative overflow-hidden group bg-neutral-900 cursor-hover-target">
+                    <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000 min-h-[300px]">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-8">
+                        <span class="text-red-500 text-[9px] font-bold uppercase tracking-[0.3em] mb-2">Signature</span>
+                        <span class="text-white font-heading tracking-widest text-3xl">WAGYU A5 RIBEYE</span>
+                    </div>
+                </div>
+                <div class="relative overflow-hidden group h-48 md:h-auto bg-neutral-900 cursor-hover-target">
+                    <img src="https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000">
+                </div>
+                <div class="relative overflow-hidden group h-48 md:h-auto bg-neutral-900 cursor-hover-target">
+                    <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?q=80&w=500&auto=format&fit=crop" class="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000">
+                </div>
+                <div class="col-span-2 md:col-span-2 relative overflow-hidden group h-64 bg-neutral-900 cursor-hover-target">
+                    <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?q=80&w=800&auto=format&fit=crop" class="w-full h-full object-cover grayscale-[30%] group-hover:grayscale-0 group-hover:scale-105 transition-all duration-1000">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
+                        <span class="text-white font-heading tracking-widest text-2xl uppercase">Bếp Trưởng Điều Hành</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SỰ KIỆN & TIỆC RIÊNG -->
+        <section id="events" class="px-6 py-28 bg-[#0a0a0a] border-t border-neutral-900">
+            <div class="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="relative h-[500px] border border-neutral-800 overflow-hidden cursor-hover-target" data-aos="fade-right">
+                    <div class="absolute inset-0 bg-black/20 z-10 hover:bg-transparent transition-colors duration-700"></div>
+                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=1000&auto=format&fit=crop" alt="Tiệc riêng VIP" class="w-full h-full object-cover grayscale-[15%] transform hover:scale-105 transition-transform duration-1000">
+                </div>
+                <div class="space-y-8 lg:pl-10" data-aos="fade-left">
+                    <div class="space-y-3">
+                        <span class="text-red-600 text-[10px] font-bold uppercase tracking-[0.4em]">Trải Nghiệm Đặc Quyền</span>
+                        <h2 class="text-4xl md:text-5xl font-heading text-white uppercase">Tiệc Riêng & Khách VIP</h2>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed font-light text-justify">
+                        Nâng tầm sự kiện của bạn tại không gian phòng VIP riêng tư nằm kế bên hầm vang Pháp. Với sức chứa giới hạn từ 10 đến 30 khách, chúng tôi cam kết mang đến phong cách phục vụ cá nhân hóa tuyệt đối.
+                    </p>
+                    <ul class="text-[11px] text-gray-400 uppercase tracking-widest space-y-4 py-4 font-medium">
+                        <li class="flex items-center gap-4"><div class="w-8 h-8 rounded-full border border-red-900 flex items-center justify-center text-red-600"><i class="fa-solid fa-wine-glass"></i></div> Menu thiết kế riêng</li>
+                        <li class="flex items-center gap-4"><div class="w-8 h-8 rounded-full border border-red-900 flex items-center justify-center text-red-600"><i class="fa-solid fa-volume-xmark"></i></div> Cách âm & Bảo mật 100%</li>
+                        <li class="flex items-center gap-4"><div class="w-8 h-8 rounded-full border border-red-900 flex items-center justify-center text-red-600"><i class="fa-solid fa-user-tie"></i></div> Quản gia phục vụ riêng</li>
+                    </ul>
+                    <a href="#reservation" class="cursor-hover-target inline-block px-10 py-4 bg-transparent hover:bg-white text-white hover:text-black border border-white font-bold text-[10px] uppercase tracking-[0.2em] transition-all">
+                        Liên hệ tư vấn
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ĐÁNH GIÁ (TESTIMONIALS) -->
+        <section id="reviews" class="px-6 py-28 bg-[#030303] border-t border-neutral-900 relative overflow-hidden">
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[200px] text-white/[0.02] font-heading z-0 pointer-events-none uppercase">Reviews</div>
+            
+            <div class="max-w-[1400px] mx-auto relative z-10">
+                <div class="flex flex-col items-center space-y-4 mb-20" data-aos="fade-up">
+                    <span class="text-red-600 text-[10px] font-bold uppercase tracking-[0.4em]">Uy Tín Thương Hiệu</span>
+                    <h2 class="text-4xl md:text-5xl font-heading text-white uppercase text-center">Ghi Nhận Từ Khách Hàng</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Review -->
+                    <div class="bg-[#0a0a0a] border border-neutral-900 p-10 space-y-8 hover:border-red-600/50 hover:-translate-y-2 transition-all duration-500 cursor-hover-target" data-aos="fade-up" data-aos-delay="100">
+                        <div class="flex text-red-600 text-sm gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-[13px] text-gray-400 leading-relaxed tracking-wide text-justify italic font-light">
+                            "Thịt bò Wagyu ở đây thực sự đạt đến độ hoàn hảo. Không gian tinh tế và tĩnh lặng rất phù hợp để tiếp đối tác. Sẽ quay lại nhiều lần."
+                        </p>
+                        <div class="border-t border-neutral-800 pt-6 flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full border border-neutral-700 flex items-center justify-center text-white font-heading text-lg">HQ</div>
+                            <div>
+                                <h4 class="text-white font-heading tracking-widest text-lg">HOÀNG QUÂN</h4>
+                                <span class="text-[9px] text-red-500 uppercase tracking-widest">Doanh nhân</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Review -->
+                    <div class="bg-[#0a0a0a] border border-neutral-900 p-10 space-y-8 hover:border-red-600/50 hover:-translate-y-2 transition-all duration-500 cursor-hover-target" data-aos="fade-up" data-aos-delay="200">
+                        <div class="flex text-red-600 text-sm gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-[13px] text-gray-400 leading-relaxed tracking-wide text-justify italic font-light">
+                            "Tính năng xem trước bàn ăn 3D trên web cực kỳ hữu ích. Bữa tối kỷ niệm ngày cưới của vợ chồng tôi đã diễn ra tuyệt vời ngoài mong đợi."
+                        </p>
+                        <div class="border-t border-neutral-800 pt-6 flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full border border-neutral-700 flex items-center justify-center text-white font-heading text-lg">TD</div>
+                            <div>
+                                <h4 class="text-white font-heading tracking-widest text-lg">TRẦN DUY</h4>
+                                <span class="text-[9px] text-red-500 uppercase tracking-widest">Khách hàng VIP</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Review -->
+                    <div class="bg-[#0a0a0a] border border-neutral-900 p-10 space-y-8 hover:border-red-600/50 hover:-translate-y-2 transition-all duration-500 cursor-hover-target" data-aos="fade-up" data-aos-delay="300">
+                        <div class="flex text-red-600 text-sm gap-1">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-[13px] text-gray-400 leading-relaxed tracking-wide text-justify italic font-light">
+                            "Sommelier tư vấn vang rất chuẩn. Château Margaux kết hợp cùng Tenderloin tạo ra sự bùng nổ vị giác. Dịch vụ đạt chuẩn Fine Dining quốc tế."
+                        </p>
+                        <div class="border-t border-neutral-800 pt-6 flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full border border-neutral-700 flex items-center justify-center text-white font-heading text-lg">LM</div>
+                            <div>
+                                <h4 class="text-white font-heading tracking-widest text-lg">LÊ MAI</h4>
+                                <span class="text-[9px] text-red-500 uppercase tracking-widest">Chuyên gia Ẩm thực</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESERVATION FORM -->
+        <section id="reservation" class="px-6 py-28 bg-[#0a0a0a] border-t border-neutral-900 relative">
+            <div class="absolute bottom-0 left-0 w-1/3 h-1/2 bg-red-900/5 blur-[150px] pointer-events-none"></div>
+            
+            <div class="max-w-5xl mx-auto bg-[#030303] border border-neutral-800 p-8 md:p-16 shadow-2xl space-y-12 relative z-10 cursor-hover-target" data-aos="fade-up">
+                
+                <div class="text-center space-y-4">
+                    <span class="text-red-600 text-[10px] font-bold uppercase tracking-[0.4em]"><i class="fa-regular fa-envelope"></i> Đặt Chỗ Trực Tuyến</span>
+                    <h2 class="text-4xl md:text-5xl font-heading text-white uppercase">Xác Nhận Đặt Bàn</h2>
+                </div>
+
+                <div id="selected-table-banner" class="hidden p-5 bg-red-950/20 border border-red-900/30 text-[10px] text-red-400 flex items-center justify-between uppercase tracking-[0.2em] font-medium backdrop-blur-sm">
+                    <span><i class="fa-solid fa-crosshairs mr-3"></i> Vị trí: <span id="table-name-display" class="text-white font-bold ml-1"></span></span>
+                    <button onclick="clearSelectedTable()" class="cursor-hover-target text-gray-500 hover:text-white p-2 transition-colors"><i class="fa-solid fa-xmark text-sm"></i></button>
+                </div>
+
+                <div id="form-cart-summary" class="hidden p-6 bg-[#0a0a0a] border border-neutral-800 text-[11px] text-gray-400 space-y-3 uppercase tracking-wider">
+                    <p class="font-bold text-white flex items-center gap-3"><i class="fa-solid fa-bell-concierge text-red-600"></i> Đơn hàng kèm theo (<span id="summary-cart-count" class="text-red-500">0 món</span>):</p>
+                    <p id="summary-cart-items" class="leading-relaxed font-light"></p>
+                </div>
+
+                <form id="reservation-form" onsubmit="handleReservationSubmit(event)" class="space-y-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="relative cursor-hover-target">
+                            <label class="block text-[9px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-3 ml-2">Họ và Tên (*)</label>
+                            <input type="text" id="fullname" required class="w-full px-5 py-4 bg-transparent border-b border-neutral-800 text-sm text-white focus:outline-none focus:border-red-600 transition-colors placeholder-neutral-700" placeholder="Nguyễn Văn A">
+                        </div>
+                        <div class="relative cursor-hover-target">
+                            <label class="block text-[9px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-3 ml-2">Số Điện Thoại (*)</label>
+                            <input type="tel" id="phone" required class="w-full px-5 py-4 bg-transparent border-b border-neutral-800 text-sm text-white focus:outline-none focus:border-red-600 transition-colors placeholder-neutral-700" placeholder="0988 *** ***">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-8">
+                        <div class="cursor-hover-target">
+                            <label class="block text-[9px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-3 ml-2">Ngày Đặt (*)</label>
+                            <input type="date" id="booking_date" required class="w-full px-5 py-4 bg-[#0a0a0a] border border-neutral-800 text-sm text-gray-300 focus:outline-none focus:border-red-600 transition-colors">
+                        </div>
+                        <div class="cursor-hover-target">
+                            <label class="block text-[9px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-3 ml-2">Giờ Đặt (*)</label>
+                            <input type="time" id="booking_time" required class="w-full px-5 py-4 bg-[#0a0a0a] border border-neutral-800 text-sm text-gray-300 focus:outline-none focus:border-red-600 transition-colors">
+                        </div>
+                        <div class="cursor-hover-target">
+                            <label class="block text-[9px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-3 ml-2">Số Lượng Khách</label>
+                            <select id="guests" class="w-full px-5 py-4 bg-[#0a0a0a] border border-neutral-800 text-sm text-gray-300 focus:outline-none focus:border-red-600 transition-colors appearance-none">
+                                <option value="1 - 2 Người">1 - 2 Người</option>
+                                <option value="3 - 4 Người" selected>3 - 4 Người</option>
+                                <option value="5 - 8 Người">5 - 8 Người</option>
+                                <option value="VVIP (Trọn gói)">Phòng VIP Trọn gói</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="cursor-hover-target">
+                        <label class="block text-[9px] font-bold uppercase tracking-[0.2em] text-gray-500 mb-3 ml-2">Yêu Cầu Đặc Biệt</label>
+                        <textarea id="note" rows="2" placeholder="Ghi chú về độ chín, dị ứng thực phẩm hoặc hoa trang trí..." class="w-full px-5 py-4 bg-transparent border-b border-neutral-800 text-sm text-white placeholder-neutral-700 focus:outline-none focus:border-red-600 transition-colors resize-none"></textarea>
+                    </div>
+                    <div class="pt-4 text-center">
+                        <button type="submit" class="cursor-hover-target inline-block px-14 py-5 bg-red-600 hover:bg-red-700 text-white font-bold text-[11px] uppercase tracking-[0.3em] transition-all hover:shadow-[0_0_25px_rgba(220,38,38,0.5)]">
+                            Xác Nhận Đặt Bàn
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- ĐỊA ĐIỂM & LIÊN HỆ (FOOTER) -->
+    <footer class="bg-[#030303] border-t border-neutral-900 pt-24 pb-10 px-6 relative" data-aos="fade-up">
+        <span id="locations" class="absolute -top-20"></span>
+        
+        <div class="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+            <div class="space-y-6 lg:col-span-1">
+                <div class="flex flex-col">
+                    <span class="text-2xl font-heading tracking-widest text-white">PINNACLE PRIME</span>
+                    <span class="text-[8px] uppercase tracking-[0.4em] text-red-600 font-bold mt-1">Steakhouse</span>
+                </div>
+                <p class="text-[11px] text-gray-500 leading-relaxed uppercase tracking-[0.15em] text-justify font-light">
+                    Đỉnh cao bít tết thượng hạng. Trải nghiệm ẩm thực đẳng cấp với nguyên liệu tuyển chọn khắt khe.
+                </p>
+                <div class="flex items-center gap-6 text-gray-400 pt-2">
+                    <a href="#" class="cursor-hover-target hover:text-white transition-colors text-lg"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="cursor-hover-target hover:text-white transition-colors text-lg"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="cursor-hover-target hover:text-white transition-colors text-lg"><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <h3 class="text-sm font-heading tracking-widest text-white uppercase border-l-2 border-red-600 pl-3">Khám Phá</h3>
+                <ul class="space-y-4 text-[10px] text-gray-500 tracking-[0.2em] uppercase font-bold">
+                    <li><a href="#menu" class="cursor-hover-target hover:text-white transition-colors">Thực Đơn A-La-Carte</a></li>
+                    <li><a href="#space-3d" class="cursor-hover-target hover:text-white transition-colors">Không Gian 3D</a></li>
+                    <li><a href="#events" class="cursor-hover-target hover:text-white transition-colors">Tiệc VIP Doanh Nhân</a></li>
+                </ul>
+            </div>
+
+            <div class="space-y-6">
+                <h3 class="text-sm font-heading tracking-widest text-white uppercase border-l-2 border-red-600 pl-3">Liên Hệ</h3>
+                <ul class="space-y-4 text-[10px] text-gray-400 tracking-[0.1em] uppercase font-light">
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-location-dot mt-1 text-red-600 w-3"></i>
+                        <span class="leading-relaxed">Tòa nhà The Peak, Q. Hoàn Kiếm, HN</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-phone mt-1 text-red-600 w-3"></i>
+                        <span>0988 123 456</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <i class="fa-solid fa-envelope mt-1 text-red-600 w-3"></i>
+                        <span>vip@pinnacle.vn</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="space-y-6">
+                <h3 class="text-sm font-heading tracking-widest text-white uppercase border-l-2 border-red-600 pl-3">Đặc Quyền Hội Viên</h3>
+                <p class="text-[10px] text-gray-500 tracking-wider uppercase font-light leading-relaxed">
+                    Đăng ký email để nhận vé mời trải nghiệm nếm thử rượu vang Pháp độc quyền hàng tháng.
+                </p>
+                <form class="flex items-center border-b border-neutral-700 pb-2 cursor-hover-target">
+                    <input type="email" placeholder="EMAIL CỦA BẠN" class="bg-transparent w-full text-[10px] uppercase tracking-widest text-white focus:outline-none placeholder-gray-600 cursor-none">
+                    <button type="button" onclick="alert('Cảm ơn quý khách đã đăng ký Hội viên VIP!')" class="text-red-600 hover:text-white text-sm transition-colors cursor-none"><i class="fa-solid fa-arrow-right-long"></i></button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="max-w-[1400px] mx-auto h-40 bg-[#111] border border-neutral-900 mb-10 cursor-hover-target">
+            <iframe src="https://maps.google.com/maps?q=Quận%20Hoàn%20Kiếm,%20Hà%20Nội&t=&z=15&ie=UTF8&iwloc=&output=embed" class="w-full h-full grayscale invert-[90%] contrast-[1.2] pointer-events-none" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+        </div>
+
+        <div class="text-center border-t border-neutral-900 pt-8 text-[9px] text-gray-600 uppercase tracking-[0.3em] font-bold">
+            &copy; 2026 PINNACLE PRIME STEAKHOUSE. BẢO LƯU MỌI QUYỀN.
+        </div>
+    </footer>
+
+    <!-- CART MODAL SLIDER -->
+    <div id="cart-modal" class="fixed inset-0 z-[60] bg-black/90 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-500 flex justify-end">
+        <div class="w-full max-w-md bg-[#050505] border-l border-neutral-900 h-full p-8 flex flex-col justify-between shadow-2xl">
+            <div>
+                <div class="flex items-center justify-between border-b border-neutral-800 pb-5 mb-8">
+                    <h3 class="text-2xl font-heading tracking-widest text-white uppercase"><i class="fa-solid fa-wine-glass text-red-600 mr-2 text-xl"></i> Giỏ Hàng</h3>
+                    <button onclick="toggleCartModal()" class="cursor-hover-target text-gray-500 hover:text-white transition-colors"><i class="fa-solid fa-xmark text-xl"></i></button>
+                </div>
+                <div id="cart-items-list" class="space-y-4 max-h-[60vh] overflow-y-auto pr-3">
+                    <p class="text-center text-gray-700 py-10 text-[10px] uppercase tracking-[0.3em]">Chưa có món ăn nào.</p>
+                </div>
+            </div>
+            <div class="border-t border-neutral-800 pt-8 space-y-6">
+                <div class="flex justify-between items-center font-heading text-2xl tracking-widest">
+                    <span class="text-gray-500 text-lg">TỔNG:</span>
+                    <span id="cart-total-price" class="text-white">0 VNĐ</span>
+                </div>
+                <a href="#reservation" onclick="toggleCartModal()" class="cursor-hover-target block w-full py-5 bg-red-600 hover:bg-red-700 text-white font-bold text-center text-[11px] uppercase tracking-[0.3em] transition-all hover:shadow-[0_0_20px_rgba(220,38,38,0.4)]">
+                    Hoàn tất & Đặt bàn
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- NÚT NỔI LIÊN HỆ & 3. ÂM THANH KHÔNG GIAN (MUSIC) -->
+    <div class="fixed bottom-8 right-8 z-50 flex flex-col gap-4">
+        
+        <!-- Nút bật tắt nhạc Jazz -->
+        <button id="music-btn" class="cursor-hover-target w-12 h-12 bg-[#0a0a0a] border border-neutral-800 hover:border-red-600 hover:text-red-500 rounded-full flex items-center justify-center text-gray-400 hover:-translate-y-1 transition-all group relative shadow-lg">
+            <i class="fa-solid fa-music text-lg"></i>
+            <span class="absolute right-16 bg-black/90 text-white text-[9px] uppercase tracking-[0.2em] px-4 py-2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-neutral-800">Tắt/Bật Nhạc</span>
+        </button>
+        <!-- File nhạc nền Jazz (có thể đổi link sau) -->
+        <audio id="bg-music" loop>
+            <source src="./nhac-nen.mp3" type="audio/mpeg">
+        </audio>
+
+        <a href="https://zalo.me/0988123456" target="_blank" class="cursor-hover-target w-12 h-12 bg-transparent border border-blue-600/50 hover:border-blue-500 hover:bg-blue-600/10 backdrop-blur-md rounded-full flex items-center justify-center text-blue-500 hover:text-blue-400 hover:-translate-y-1 transition-all group relative">
+            <i class="fa-solid fa-comment-dots text-xl"></i>
+            <span class="absolute right-16 bg-black/90 text-white text-[9px] uppercase tracking-[0.2em] px-4 py-2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-neutral-800">Tư Vấn Zalo</span>
+        </a>
+        
+        <a href="tel:0988123456" class="cursor-hover-target w-12 h-12 bg-red-600 hover:bg-red-500 rounded-full flex items-center justify-center text-white shadow-[0_0_15px_rgba(220,38,38,0.4)] hover:-translate-y-1 transition-all group relative">
+            <i class="fa-solid fa-phone text-lg"></i>
+            <span class="absolute right-16 bg-black/90 text-white text-[9px] uppercase tracking-[0.2em] px-4 py-2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none border border-neutral-800">0988 123 456</span>
+        </a>
+    </div>
+
+    <!-- SCRIPT HIỆU ỨNG VÀ TIỆN ÍCH -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        // AOS Animation
+        AOS.init({ duration: 1000, once: true, offset: 50 });
+
+        // Tắt màn hình chờ
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').style.opacity = '0';
+                setTimeout(() => document.getElementById('preloader').remove(), 1000);
+            }, 1800);
+        });
+
+        // Thanh tiến trình cuộn
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scroll-progress').style.width = scrolled + '%';
+
+            const navbar = document.getElementById('navbar');
+            if (winScroll > 50) {
+                navbar.classList.add('bg-[#030303]/95', 'shadow-2xl', 'border-b', 'border-red-900/30');
+                navbar.classList.remove('bg-[#030303]/70', 'border-white/5');
+            } else {
+                navbar.classList.remove('bg-[#030303]/95', 'shadow-2xl', 'border-b', 'border-red-900/30');
+                navbar.classList.add('bg-[#030303]/70', 'border-white/5');
+            }
+        });
+
+        // Xử lý bật/tắt nhạc
+        let isMusicPlaying = false;
+        const music = document.getElementById('bg-music');
+        const musicBtn = document.getElementById('music-btn');
+        music.volume = 0.3; // Chỉnh âm lượng nhỏ dịu nhẹ
+
+        musicBtn.addEventListener('click', () => {
+            if (isMusicPlaying) {
+                music.pause();
+                musicBtn.innerHTML = '<i class="fa-solid fa-music text-lg"></i>';
+                musicBtn.classList.remove('text-red-500', 'border-red-600');
+            } else {
+                music.play();
+                musicBtn.innerHTML = '<i class="fa-solid fa-volume-high text-lg"></i>';
+                musicBtn.classList.add('text-red-500', 'border-red-600', 'shadow-[0_0_15px_rgba(220,38,38,0.4)]');
+            }
+            isMusicPlaying = !isMusicPlaying;
+        });
+
+        // Xử lý Con Trỏ Chuột (Custom Cursor)
+        if (window.innerWidth >= 1024) {
+            const cursor = document.getElementById('custom-cursor');
+            const cursorBlur = document.getElementById('custom-cursor-blur');
+            
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+                cursorBlur.style.left = e.clientX + 'px';
+                cursorBlur.style.top = e.clientY + 'px';
+            });
+
+            // Tạo hiệu ứng chớp vòng tròn khi trỏ vào nút, thẻ món ăn
+            const hoverTargets = document.querySelectorAll('.cursor-hover-target, button, a, input, select, textarea');
+            hoverTargets.forEach(target => {
+                target.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+                target.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+            });
+        }
+    </script>
+
+    <!-- JAVASCRIPT LOGIC API (GIỮ NGUYÊN) -->
+    <script>
+        const API_BASE = 'http://localhost:3000/api';
+        let allDishes = [], currentCategory = 'all', cart = [];
+        let selectedTableName = '';
+
+        function selectTableType(tableName) {
+            selectedTableName = tableName;
+            const banner = document.getElementById('selected-table-banner');
+            const nameDisplay = document.getElementById('table-name-display');
+            banner.classList.remove('hidden');
+            nameDisplay.innerText = tableName;
+            document.getElementById('reservation').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function clearSelectedTable() {
+            selectedTableName = '';
+            document.getElementById('selected-table-banner').classList.add('hidden');
+        }
+
+        async function fetchDishes() {
+            try {
+                const res = await fetch(`${API_BASE}/dishes`);
+                if (!res.ok) throw new Error();
+                let data = await res.json();
+                allDishes = data.length > 0 ? data : [];
+                renderDishes();
+            } catch (err) {
+                document.getElementById('dish-grid').innerHTML = `<p class="col-span-full text-center text-red-600 py-12 text-[10px] uppercase tracking-widest">Lỗi kết nối máy chủ.</p>`;
+            }
+        }
+
+        function renderDishes() {
+            const grid = document.getElementById('dish-grid');
+            if (!grid) return;
+            const searchVal = (document.getElementById('search-input')?.value || '').toLowerCase();
+            const filtered = allDishes.filter(dish => {
+                const dishCat = (dish.category || '').toLowerCase();
+                const matchCategory = currentCategory === 'all' || dishCat.includes(currentCategory);
+                const matchSearch = (dish.name || '').toLowerCase().includes(searchVal);
+                return matchCategory && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-gray-600 py-12 text-[10px] uppercase tracking-widest">Không tìm thấy món ăn.</p>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(dish => `
+                <div class="bg-black border border-neutral-900 flex flex-col justify-between hover:border-red-600/30 hover:bg-[#0a0a0a] transition-all duration-500 group cursor-hover-target">
+                    <div>
+                        <div class="h-64 overflow-hidden relative">
+                            <!-- Gắn nhãn Best Seller ảo cho món thịt -->
+                            ${dish.category === 'main' ? '<span class="absolute top-4 right-4 z-10 bg-red-600 text-white text-[8px] font-bold uppercase tracking-widest px-2 py-1 shadow-[0_0_10px_red]">Signature</span>' : ''}
+                            <img src="${dish.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 grayscale-[20%] group-hover:grayscale-0">
+                        </div>
+                        <div class="p-6 space-y-4">
+                            <h3 class="font-heading text-2xl text-white tracking-widest uppercase">${dish.name}</h3>
+                            <span class="block text-red-500 font-bold text-sm tracking-[0.1em]">${Number(dish.price).toLocaleString('vi-VN')} đ</span>
+                            <p class="text-[10px] text-gray-500 line-clamp-2 leading-relaxed uppercase tracking-[0.1em] font-light">${dish.description || ''}</p>
+                        </div>
+                    </div>
+                    <div class="p-6 pt-0 mt-2">
+                        <button onclick="addToCart(${dish.id})" class="cursor-none w-full py-3.5 bg-transparent border border-neutral-800 hover:border-red-600 text-white text-[9px] font-bold uppercase tracking-[0.3em] transition-all flex items-center justify-center gap-2 group-hover:shadow-[0_0_10px_rgba(220,38,38,0.2)]">
+                            <i class="fa-solid fa-plus text-red-600"></i> Chọn Món
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setCategory(cat) {
+            currentCategory = cat;
+            document.querySelectorAll('.category-btn').forEach(btn => btn.className = 'category-btn cursor-hover-target px-7 py-3 font-bold text-[9px] uppercase tracking-[0.2em] transition-all bg-[#0a0a0a] text-gray-400 border border-neutral-800 hover:border-neutral-500');
+            document.getElementById(`btn-${cat}`).className = 'category-btn active cursor-hover-target px-7 py-3 font-bold text-[9px] uppercase tracking-[0.2em] transition-all bg-red-600 text-white shadow-[0_0_10px_rgba(220,38,38,0.3)] border-transparent';
+            renderDishes();
+        }
+
+        function filterDishes() { renderDishes(); }
+
+        function addToCart(dishId) {
+            const dish = allDishes.find(d => d.id === dishId);
+            if (!dish) return;
+            const existing = cart.find(item => item.id === dishId);
+            if (existing) existing.quantity += 1;
+            else cart.push({ ...dish, quantity: 1 });
+            updateCartUI();
+        }
+
+        function updateQuantity(dishId, delta) {
+            const item = cart.find(i => i.id === dishId);
+            if (!item) return;
+            item.quantity += delta;
+            if (item.quantity <= 0) cart = cart.filter(i => i.id !== dishId);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            document.getElementById('cart-badge').innerText = totalCount;
+            document.getElementById('cart-total-price').innerText = totalPrice.toLocaleString('vi-VN') + ' VNĐ';
+
+            const cartList = document.getElementById('cart-items-list');
+            if (cart.length === 0) {
+                cartList.innerHTML = `<p class="text-center text-gray-700 py-10 text-[10px] uppercase tracking-[0.3em]">Chưa có món ăn nào.</p>`;
+            } else {
+                cartList.innerHTML = cart.map(item => `
+                    <div class="flex items-center justify-between p-4 bg-[#0a0a0a] border border-neutral-900 cursor-hover-target">
+                        <div>
+                            <h4 class="font-heading text-lg text-white tracking-widest uppercase">${item.name}</h4>
+                            <p class="text-[10px] text-red-500 font-bold tracking-[0.2em] mt-1">${Number(item.price).toLocaleString('vi-VN')} đ</p>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <button onclick="updateQuantity(${item.id}, -1)" class="cursor-none w-7 h-7 bg-transparent hover:bg-neutral-800 text-gray-400 flex items-center justify-center text-xs border border-neutral-700 transition-colors">-</button>
+                            <span class="text-xs font-bold text-white w-3 text-center">${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.id}, 1)" class="cursor-none w-7 h-7 bg-transparent hover:bg-neutral-800 text-gray-400 flex items-center justify-center text-xs border border-neutral-700 transition-colors">+</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            const summaryDiv = document.getElementById('form-cart-summary');
+            if (cart.length > 0) {
+                summaryDiv.classList.remove('hidden');
+                document.getElementById('summary-cart-count').innerText = `${totalCount} món`;
+                document.getElementById('summary-cart-items').innerText = cart.map(i => `${i.name} (x${i.quantity})`).join(', ');
+            } else {
+                summaryDiv.classList.add('hidden');
+            }
+        }
+
+        function toggleCartModal() {
+            const modal = document.getElementById('cart-modal');
+            modal.classList.toggle('opacity-0');
+            modal.classList.toggle('pointer-events-none');
+        }
+
+        async function handleReservationSubmit(e) {
+            e.preventDefault();
+            const noteVal = document.getElementById('note').value || '';
+            const fullNote = selectedTableName ? `[Khu vực: ${selectedTableName}] ${noteVal}` : noteVal;
+
+            const payload = {
+                fullname: document.getElementById('fullname').value,
+                phone: document.getElementById('phone').value,
+                booking_date: document.getElementById('booking_date').value,
+                booking_time: document.getElementById('booking_time').value,
+                guests: document.getElementById('guests').value,
+                note: fullNote,
+                total_amount: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+                cartItems: cart
+            };
+
+            try {
+                const res = await fetch(`${API_BASE}/reservations`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                if (!res.ok) throw new Error();
+
+                alert('YÊU CẦU ĐẶT BÀN THÀNH CÔNG! HỆ THỐNG ĐÃ GHI NHẬN.');
+                document.getElementById('reservation-form').reset();
+                cart = []; clearSelectedTable(); updateCartUI();
+            } catch (err) {
+                alert('LỖI KẾT NỐI MÁY CHỦ. VUI LÒNG KIỂM TRA LẠI BACKEND!');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', fetchDishes);
+    </script>
+</body>
+</html>

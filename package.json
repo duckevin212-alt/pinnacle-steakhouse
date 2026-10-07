@@ -1,0 +1,17 @@
+{
+  "name": "veganfry-backend",
+  "version": "1.0.0",
+  "description": "Node.js Backend with MySQL for Veganfry",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "body-parser": "^2.3.0",
+    "cors": "^2.8.6",
+    "express": "^4.22.3",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.6.1"
+  }
+}
