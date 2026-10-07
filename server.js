@@ -4,24 +4,19 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
 
-// Kết nối MySQL
-const db = mysql.createConnection({
-    host: 'brffs6egugzwtsf7pebj-mysql.services.clever-cloud.com', // Copy từ dòng MYSQL_ADDON_HOST
-    user: 'uq69gxzodybxdek4',                                     // Copy từ dòng MYSQL_ADDON_USER
-    password: 'o2T1GiAjT6DD1SiQiIBu',                             // Copy từ dòng MYSQL_ADDON_PASSWORD
-    database: 'brffs6egugzwtsf7pebj'                              // Copy từ dòng MYSQL_ADDON_DB
-});
-db.connect((err) => {
-    if (err) {
-        console.error('❌ Lỗi kết nối CSDL:', err);
-        return;
-    }
-    console.log('✅ Đã kết nối MySQL thành công!');
+// Đổi sang createPool để không bao giờ bị đứt kết nối trên Vercel
+const db = mysql.createPool({
+    host: 'brffs6egugzwtsf7pebj-mysql.services.clever-cloud.com',
+    user: 'uq69gxzodybxdek4',
+    password: 'o2T1GiAjT6DD1SiQiIBu',
+    database: 'brffs6egugzwtsf7pebj',
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0
 });
 
 // ==========================================
@@ -51,7 +46,7 @@ app.put('/api/dishes/:id', (req, res) => {
         res.json({ message: 'Cập nhật món thành công' });
     });
 });
-// Thêm API Cập nhật trạng thái đơn đặt bàn
+
 app.put('/api/reservations/:id/status', (req, res) => {
     const { status } = req.body;
     const sql = 'UPDATE reservations SET status = ? WHERE id = ?';
@@ -63,6 +58,7 @@ app.put('/api/reservations/:id/status', (req, res) => {
         res.json({ message: 'Đã cập nhật trạng thái đơn' });
     });
 });
+
 app.delete('/api/dishes/:id', (req, res) => {
     db.query('DELETE FROM dishes WHERE id=?', [req.params.id], (err, result) => {
         if (err) return res.status(500).json({ error: err.message });
@@ -81,12 +77,9 @@ app.get('/api/reservations', (req, res) => {
 });
 
 app.post('/api/reservations', (req, res) => {
-    // Thêm cartItems vào danh sách nhận từ client
     const { fullname, phone, booking_date, booking_time, guests, note, total_amount, cartItems } = req.body;
-    
-    // Chuyển mảng món ăn thành chuỗi JSON để lưu vào CSDL
     const cartItemsJson = cartItems ? JSON.stringify(cartItems) : '[]';
-
+    
     const sql = 'INSERT INTO reservations (fullname, phone, booking_date, booking_time, guests, note, total_amount, cart_items) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
     
     db.query(sql, [fullname, phone, booking_date, booking_time, guests, note, total_amount || 0, cartItemsJson], (err, result) => {
@@ -108,13 +101,7 @@ app.delete('/api/reservations/:id', (req, res) => {
     });
 });
 
-app.listen(port, () => {
-    console.log(`🚀 Server đang chạy tại http://localhost:${port}`);
-});
-// Dòng này thường nằm ở cuối file server.js
-app.listen(PORT, () => {
-    console.log(`Server đang chạy tại cổng ${PORT}`);
-});
-
-// THÊM DÒNG NÀY ĐỂ VERCEL ĐỌC ĐƯỢC BACKEND:
+// ==========================================
+// CẤU HÌNH SERVERLESS CHO VERCEL
+// ==========================================
 module.exports = app;
