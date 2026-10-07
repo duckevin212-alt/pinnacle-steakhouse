@@ -11,12 +11,11 @@ app.use(bodyParser.json());
 
 // Kết nối MySQL
 const db = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'webdangcap'
+    host: 'brffs6egugzwtsf7pebj-mysql.services.clever-cloud.com', // Copy từ dòng MYSQL_ADDON_HOST
+    user: 'uq69gxzodybxdek4',                                     // Copy từ dòng MYSQL_ADDON_USER
+    password: 'o2T1GiAjT6DD1SiQiIBu',                             // Copy từ dòng MYSQL_ADDON_PASSWORD
+    database: 'brffs6egugzwtsf7pebj'                              // Copy từ dòng MYSQL_ADDON_DB
 });
-
 db.connect((err) => {
     if (err) {
         console.error('❌ Lỗi kết nối CSDL:', err);
