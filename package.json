@@ -13,5 +13,17 @@
     "express": "^4.22.3",
     "mysql": "^2.18.1",
     "mysql2": "^3.24.5"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/duckevin212-alt/pinnacle-steakhouse.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/duckevin212-alt/pinnacle-steakhouse/issues"
+  },
+  "homepage": "https://github.com/duckevin212-alt/pinnacle-steakhouse#readme"
 }
