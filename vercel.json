@@ -8,16 +8,16 @@
     { "src": "js/**/*", "use": "@vercel/static" },
     { "src": "images/**/*", "use": "@vercel/static" }
   ],
-  "routes": [
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/server.js" }
+  ],
+  "headers": [
     {
-      "src": "/models/(.*\\.glb)",
-      "headers": {
-        "Content-Type": "model/gltf-binary",
-        "Cache-Control": "public, max-age=31536000, immutable"
-      },
-      "dest": "/models/$1"
-    },
-    { "src": "/api/(.*)", "dest": "/server.js" },
-    { "src": "/(.*)", "dest": "/$1" }
+      "source": "/models/(.*\\.glb)",
+      "headers": [
+        { "key": "Content-Type", "value": "model/gltf-binary" },
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    }
   ]
 }
