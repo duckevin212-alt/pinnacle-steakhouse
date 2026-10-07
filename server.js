@@ -112,3 +112,10 @@ app.delete('/api/reservations/:id', (req, res) => {
 app.listen(port, () => {
     console.log(`🚀 Server đang chạy tại http://localhost:${port}`);
 });
+// Dòng này thường nằm ở cuối file server.js
+app.listen(PORT, () => {
+    console.log(`Server đang chạy tại cổng ${PORT}`);
+});
+
+// THÊM DÒNG NÀY ĐỂ VERCEL ĐỌC ĐƯỢC BACKEND:
+module.exports = app;
